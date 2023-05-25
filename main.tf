@@ -1,7 +1,7 @@
 locals {
   name_postfix               = "${var.subscription_business_unit}-${var.subscription_purpose}"
   subscription_number_padded = format("%03s", var.subscription_number)
-  subscription_name          = "${local.name_postfix}-${var.subscription_number_padded}"
+  subscription_name          = "${local.name_postfix}-${local.subscription_number_padded}"
 }
 
 terraform {
@@ -29,7 +29,7 @@ data "azuread_client_config" "current" {}
 
 resource "azuread_application" "vending" {
   count        = var.create_service_principal ? 1 : 0
-  display_name = "sp-${local.name-postfix}"
+  display_name = "sp-${local.name_postfix}"
   owners       = [data.azuread_client_config.current.object_id]
 }
 
@@ -85,7 +85,7 @@ module "lz_vending" {
 
   # management group association variables
   subscription_management_group_association_enabled = true
-  subscription_management_group_id                  = azurerm_management_group.vending.id
+  subscription_management_group_id                  = data.azurerm_management_group.vending.id
 
   # role assignments
   role_assignment_enabled = true
