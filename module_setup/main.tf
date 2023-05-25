@@ -19,7 +19,7 @@ variable "oauth_token_id" {
 variable "module_repository" {
   type        = string
   description = "The GitHub repository for the module"
-  default     = "jared-holgate-microsoft-demos/terraform-jaredfholgate-subscription-vending-demo"
+  default     = "jared-holgate-microsoft-demos/terraform-jaredfholgate-azure-subscription-vending-demo"
 }
 
 terraform {
@@ -40,28 +40,28 @@ resource "tfe_registry_module" "registry_module" {
   vcs_repo {
     display_identifier = var.module_repository
     identifier         = var.module_repository
-    oauth_token_id     = tfe_oauth_client.test-oauth-client.oauth_token_id
+    oauth_token_id     = var.oauth_token_id
   }
-  no_code = true
+  no_code            = true
 }
 
-resource "tfe_no_code_module" "foobar" {
+resource "tfe_no_code_module" "registry_module" {
   registry_module = tfe_registry_module.registry_module.id
 
   variable_options {
-    name    = "billing_account_name "
+    name    = "billing_account_name"
     type    = "string"
     options = ["BVT EntScale VSOID#6627 #Cust1 (DO NOT USE) (7690848)", "example 2", "example 3"]
   }
 
   variable_options {
-    name    = "billing_enrollment_name "
+    name    = "billing_enrollment_name"
     type    = "string"
     options = ["Jared H (340368)", "example 2", "example 3"]
   }
 
   variable_options {
-    name    = "subscription_business_unit  "
+    name    = "subscription_business_unit"
     type    = "string"
     options = ["cps", "mkting", "prdn"]
   }
