@@ -52,12 +52,12 @@ data "azurerm_billing_enrollment_account_scope" "vending" {
   enrollment_account_name = var.billing_enrollment_name
 }
 
-data "azuread_users" "users" {
+data "azuread_users" "subscription_owners" {
   mail_nicknames = var.subscription_owners
 }
 
 locals {
-  subscription_user_owners = { for user in data.azuread_users.users : user.object_id => {
+  subscription_user_owners = { for user in data.azuread_users.subscription_owners.users : user.object_id => {
     principal_id   = user.object_id
     definition     = "Owner"
     relative_scope = ""
