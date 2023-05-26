@@ -74,7 +74,7 @@ locals {
 }
 
 data "azurerm_management_group" "vending" {
-  name = var.subscription_management_group
+  display_name = var.subscription_management_group
 }
 
 module "lz_vending" {
