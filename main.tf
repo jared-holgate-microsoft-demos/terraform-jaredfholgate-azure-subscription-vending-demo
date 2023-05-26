@@ -93,7 +93,7 @@ module "lz_vending" {
 
   # management group association variables
   subscription_management_group_association_enabled = true
-  subscription_management_group_id                  = data.azurerm_management_group.vending.id
+  subscription_management_group_id                  = data.azurerm_management_group.vending.name
 
   # role assignments
   role_assignment_enabled = true
