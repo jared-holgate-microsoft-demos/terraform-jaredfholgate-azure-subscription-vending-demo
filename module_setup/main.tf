@@ -42,7 +42,7 @@ resource "tfe_registry_module" "registry_module" {
     identifier         = var.module_repository
     oauth_token_id     = var.oauth_token_id
   }
-  no_code            = true
+  no_code = true
 }
 
 resource "tfe_no_code_module" "registry_module" {

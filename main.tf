@@ -17,6 +17,14 @@ terraform {
   }
 }
 
+provider "azurerm" {
+  features {}
+}
+
+provider "azuread" {
+
+}
+
 module "naming" {
   source      = "Azure/naming/azurerm"
   version     = "0.2.0"
@@ -45,7 +53,7 @@ data "azurerm_billing_enrollment_account_scope" "vending" {
 }
 
 data "azuread_users" "users" {
-  user_principal_names = var.subscription_owners
+  mail_nicknames = var.subscription_owners
 }
 
 locals {
