@@ -13,51 +13,10 @@ jobs:
         uses: actions/checkout@v2.5.0
       - name: Vend Subscription
         run: |
-          $json = $env:EVENT_PAYLOAD
-          Write-Host $json
-          $event_payload = ConvertFrom-Json $json
-          
-          tar -cvzf config.tar.gz -L *.tf 
-          
-          $headers=@{
-            "Authorization" = "Bearer $env:TERRAFORM_CLOUD_TOKEN"
-          }
-          
-          Write-Host "Running terraform apply for $workspaceName"
-          $workspace = Invoke-RestMethod -Uri "https://$($terraformUrl)/api/v2/organizations/$($organizationName)/workspaces/$($workspaceName)" -Headers $headers -Method Get
-          $workspaceId = $workspace.data.id
+          $subscriptionData = $env:EVENT_PAYLOAD
+          Write-Host $subscriptionData
 
-          $params = @{
-              "data" = @{
-                  "type" = "confgiration-versions";
-                  "attributes" = @{
-                      "auto-queue-runs" = $true
-                  }
-              }
-          }
-          $configurationVersion = Invoke-RestMethod -Uri "https://$($terraformUrl)/api/v2/workspaces/$($workspaceId)/configuration-versions" -Headers @{
-              "Authorization" = "Bearer $terraformToken"
-          } -Method Post -ContentType "application/vnd.api+json" -Body ($params | ConvertTo-Json)
-          $uploadUrl = $configurationVersion.data.attributes."upload-url"
-
-          Invoke-RestMethod -Uri $uploadUrl -Headers @{
-              "Authorization" = "Bearer $terraformToken"
-          } -Method Put -ContentType "application/octet-stream" -InFile ./config.tar.gz
-
-          $url = "https://api.github.com/repos/$owner/$repository/dispatches"
-          $body=@{
-            "event_type" = "vend_subscription"
-            "client_payload" = @{
-              "subscription_id" = "12345678-1234-1234-1234-123456789012"
-              "subscription_name" = "My Subscription"
-              "subscription_owner" = "jared-holgate-microsoft-demos"
-              "subscription_owner_name" = "Jared Holgate"
-              "subscription_owner_email" = ""
-            }
-          }
-          $bodyJson = ConvertTo-Json $body
-
-          $result = Invoke-RestMethod -Method "POST" -Uri $url -Body $bodyJson -Headers $headers -ContentType "application/vnd.github+json"
+          ./scripts/vend_subscription.ps1 -subscriptionData $subscriptionData -terraformCloudUrl $env:TERRAFORM_CLOUD_URL -terraformCloudToken $env:TERRAFORM_CLOUD_TOKEN -terraformCloudOrganisation $env:TERRAFORM_CLOUD_ORGANISATION -terraformCloudProject $env:TERRAFORM_CLOUD_PROJECT
         shell: pwsh
         env:
           EVENT_PAYLOAD: ${{ toJson(github.event.client_payload) }}
