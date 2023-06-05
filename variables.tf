@@ -2,7 +2,7 @@ variable "subscription_purpose" {
   type        = string
   description = "The purpose of the subscription e.g. dev, test, prod, sandbox, etc"
   validation {
-    condition     = length(var.subscription_purpose) > 2 && length(var.subscription_purpose) < 10
+    condition     = length(var.subscription_purpose) > 1 && length(var.subscription_purpose) < 10
     error_message = "The subscription_purpose must be between 2 and 10 characters"
   }
 }
@@ -11,7 +11,7 @@ variable "subscription_business_unit" {
   type        = string
   description = "The business unit of the subscription e.g. hr, finance, it, etc"
   validation {
-    condition     = length(var.subscription_business_unit) > 2 && length(var.subscription_business_unit) < 10
+    condition     = length(var.subscription_business_unit) > 1 && length(var.subscription_business_unit) < 10
     error_message = "The subscription_business_unit must be between 2 and 10 characters"
   }
 }

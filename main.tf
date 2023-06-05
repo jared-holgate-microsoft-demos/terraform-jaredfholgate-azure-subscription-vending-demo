@@ -37,7 +37,7 @@ data "azuread_client_config" "current" {}
 
 resource "azuread_application" "vending" {
   count        = var.create_service_principal ? 1 : 0
-  display_name = "sp-${local.name_postfix}"
+  display_name = "sp-${local.subscription_name}"
   owners       = [data.azuread_client_config.current.object_id]
 }
 

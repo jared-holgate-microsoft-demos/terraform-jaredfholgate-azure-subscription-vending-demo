@@ -33,3 +33,5 @@ override.tf.json
 .terraformrc
 terraform.rc
 module_setup/.terraform.lock.hcl
+config.tar.gz
+scripts/test-variables.txt
