@@ -1,0 +1,18 @@
+name: "Subscription Vending"
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  
+jobs:
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.5.0
+      - name: Vend Subscription
+        run: |
+          $test = "Hello"
+          Write-Host "$test World!"
+        shell: pwsh
