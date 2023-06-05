@@ -13,6 +13,9 @@ jobs:
         uses: actions/checkout@v2.5.0
       - name: Vend Subscription
         run: |
-          $test = "Hello"
-          Write-Host "$test World!"
+          Write-Host "$env:test World!"
+          Write-Host $env:EVENT_PAYLOAD
         shell: pwsh
+        env:
+          TEST: Hello
+          EVENT_PAYLOAD: ${{ github.event.client_payload }}
