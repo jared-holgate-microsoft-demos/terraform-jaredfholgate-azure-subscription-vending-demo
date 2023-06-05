@@ -1,0 +1,25 @@
+name: "Subscription Vending"
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  
+jobs:
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.5.0
+      - name: Vend Subscription
+        run: |
+          $test = $env:TEST
+          Write-Host "$test World!"
+          $json = $env:EVENT_PAYLOAD
+          Write-Host $json
+          $event_payload = ConvertFrom-Json $json
+          Write-Host $event_payload.subscription_id
+        shell: pwsh
+        env:
+          TEST: Hello
+          EVENT_PAYLOAD: ${{ toJson(github.event.client_payload) }}
