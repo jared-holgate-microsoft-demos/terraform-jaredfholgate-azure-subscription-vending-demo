@@ -6,7 +6,11 @@ param(
     [string]$subscriptionData
 )
 
-Write-Host $subscriptionData
+Write-Host "terraformCloudOrganization: $terraformCloudOrganization"
+Write-Host "terraformCloudProject: $terraformCloudProject"
+Write-Host "terraformCloudUrl: $terraformCloudUrl"
+Write-Host "terraformCloudAccessToken: $terraformCloudAccessToken"
+Write-Host "subscriptionData: $subscriptionData"
 
 $subscriptionData | Out-File -FilePath ./terraform.tfvars.json
 
