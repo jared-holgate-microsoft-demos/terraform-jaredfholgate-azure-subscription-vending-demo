@@ -15,8 +15,11 @@ jobs:
         run: |
           $test = $env:TEST
           Write-Host "$test World!"
-          Write-Host $env:EVENT_PAYLOAD
+          $json = $env:EVENT_PAYLOAD
+          Write-Host $json
+          $event_payload = Convert-FromJson $json
+          Write-Host $event_payload.subscription_id
         shell: pwsh
         env:
           TEST: Hello
-          EVENT_PAYLOAD: ${{ github.event.client_payload }}
+          EVENT_PAYLOAD: ${{ toJson(github.event.client_payload) }}
