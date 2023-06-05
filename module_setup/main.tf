@@ -51,13 +51,13 @@ resource "tfe_no_code_module" "registry_module" {
   variable_options {
     name    = "billing_account_name"
     type    = "string"
-    options = ["BVT EntScale VSOID#6627 #Cust1 (DO NOT USE) (7690848)", "example 2", "example 3"]
+    options = ["7690848", "example 2", "example 3"]
   }
 
   variable_options {
     name    = "billing_enrollment_name"
     type    = "string"
-    options = ["Jared H (340368)", "example 2", "example 3"]
+    options = ["340368", "example 2", "example 3"]
   }
 
   variable_options {
@@ -81,7 +81,7 @@ resource "tfe_no_code_module" "registry_module" {
   variable_options {
     name    = "subscription_management_group"
     type    = "string"
-    options = ["Tenant Root Group", "exampe 2", "example 3"]
+    options = ["Subscription Vending Demo", "Tenant Root Group", "example 3"]
   }
 
   variable_options {
