@@ -1,12 +1,12 @@
 param(
-    [string]$terraformCloudOrganization,
+    [string]$terraformCloudOrganisation,
     [string]$terraformCloudProject,
     [string]$terraformCloudUrl,
     [string]$terraformCloudAccessToken,
     [string]$subscriptionData
 )
 
-Write-Host "terraformCloudOrganization: $terraformCloudOrganization"
+Write-Host "terraformCloudOrganisation: $terraformCloudOrganisation"
 Write-Host "terraformCloudProject: $terraformCloudProject"
 Write-Host "terraformCloudUrl: $terraformCloudUrl"
 Write-Host "terraformCloudAccessToken: $terraformCloudAccessToken"
@@ -32,18 +32,18 @@ $headers=@{
 $terraformCloudUrlPrefix = "https://$($terraformCloudUrl)/api/v2"
 
 Write-Host "Checking if workspace $workspaceName exists."
-$uri = "$terraformCloudUrlPrefix/organizations/$($terraformCloudOrganization)/workspaces/$($workspaceName)"
+$uri = "$terraformCloudUrlPrefix/organizations/$($terraformCloudOrganisation)/workspaces/$($workspaceName)"
 $workspace = Invoke-RestMethod -Uri $uri -Headers $headers -Method Get -SkipHttpErrorCheck -StatusCodeVariable "statusCode"
 
 if($statusCode -eq "404")
 {
     Write-Host "Workspace $workspaceName does not exist. Creating it now."
 
-    $uri = "$terraformCloudUrlPrefix/organizations/$($terraformCloudOrganization)/projects?filter[names]=$($terraformCloudProject)"
+    $uri = "$terraformCloudUrlPrefix/organizations/$($terraformCloudOrganisation)/projects?filter[names]=$($terraformCloudProject)"
     $project = Invoke-RestMethod -Uri $uri -Headers $headers -Method Get
     $projectId = $project.data.id
 
-    $uri = "$terraformCloudUrlPrefix/organizations/$($terraformCloudOrganization)/workspaces"
+    $uri = "$terraformCloudUrlPrefix/organizations/$($terraformCloudOrganisation)/workspaces"
     $body = @{
         "data" = @{
             "type" = "workspaces";
