@@ -15,7 +15,8 @@ jobs:
           $subscriptionData = $env:EVENT_PAYLOAD
           Write-Host $subscriptionData
 
-          ./scripts/vend_subscription.ps1 -subscriptionData $subscriptionData -terraformCloudUrl $env:TERRAFORM_CLOUD_URL -terraformCloudAccessToken $env:TERRAFORM_CLOUD_TOKEN -terraformCloudOrganisation $env:TERRAFORM_CLOUD_ORGANISATION -terraformCloudProject $env:TERRAFORM_CLOUD_PROJECT
+          $runResult = ./scripts/vend_subscription.ps1 -subscriptionData $subscriptionData -terraformCloudUrl $env:TERRAFORM_CLOUD_URL -terraformCloudAccessToken $env:TERRAFORM_CLOUD_TOKEN -terraformCloudOrganisation $env:TERRAFORM_CLOUD_ORGANISATION -terraformCloudProject $env:TERRAFORM_CLOUD_PROJECT
+          Write-Host $runResult
         shell: pwsh
         env:
           EVENT_PAYLOAD: ${{ toJson(github.event.client_payload.subscriptionData) }}
