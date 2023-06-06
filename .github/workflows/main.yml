@@ -2,7 +2,6 @@ name: "Subscription Vending"
 
 on:
   repository_dispatch:
-  workflow_dispatch:
   
 jobs:
   deploy-to-dev:

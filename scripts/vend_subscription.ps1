@@ -81,7 +81,7 @@ $body = @{
     "data" = @{
         "type" = "configuration-versions";
         "attributes" = @{
-            "auto-queue-runs" = $true
+            "auto-queue-runs" = $false
         }
     }
 }
@@ -90,3 +90,16 @@ $configurationVersion = Invoke-RestMethod -Uri $uri  -Headers $headers -Method P
 $uploadUrl = $configurationVersion.data.attributes."upload-url"
 
 Invoke-RestMethod -Uri $uploadUrl -Headers $headers -Method Put -ContentType "application/octet-stream" -InFile ./config.tar.gz
+
+Write-Host "Queueing run for $workspaceName ($workspaceId)."
+$uri = "$terraformCloudUrlPrefix/workspaces/$($workspaceId)/runs"
+$body = @{
+    "data" = @{
+        "attributes" = @{
+            "is-destroy" = $false
+        }
+        "type" = "runs"
+    }
+}
+$bodyJson = ConvertTo-Json $body -Depth 10
+$runResult = Invoke-RestMethod -Uri $uri -Headers $headers -Method Post -ContentType "application/vnd.api+json" -Body $bodyJson
