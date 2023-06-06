@@ -140,6 +140,8 @@ while(!($finalStatus.Contains($runStatus)))
     $runStatus = $runResult.data.attributes.status
 }
 
+$outputs = @()
+
 if($runStatus -eq "applied" -or $runStatus -eq "planned_and_finished")
 {
     Write-Host "Run completed and applied successfully."
@@ -149,14 +151,27 @@ if($runStatus -eq "applied" -or $runStatus -eq "planned_and_finished")
     $stateVersionId = $stateVersion.data.id
 
     $uri = "$terraformCloudUrlPrefix/state-versions/$stateVersionId/outputs"
-    $outputs = Invoke-RestMethod -Method "GET" -Uri $uri -Headers $headers
+    $outputResult = Invoke-RestMethod -Method "GET" -Uri $uri -Headers $headers
+
+    foreach($output in $outputResult.data)
+    {
+        $outputName = $output.attributes.name
+        $outputValue = $output.attributes.value
+        $outputType = $output.attributes.type
+        $outputObject = @{
+            "name" = $outputName
+            "value" = $outputValue
+            "type" = $outputType
+        }
+        $outputs.Add($outputObject)
+    }
 }
 
 $result = @{
     "workspaceId" = $workspaceId
     "runId" = $runId
     "runStatus" = $runStatus
-    "outputs" = $outputs.data
+    "outputs" = $outputs
 }
 
 return $result | ConvertTo-Json -Depth 10

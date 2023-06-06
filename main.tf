@@ -32,7 +32,6 @@ module "naming" {
   unique-seed = local.subscription_number_padded
 }
 
-
 data "azuread_client_config" "current" {}
 
 resource "azuread_application" "vending" {
@@ -45,7 +44,6 @@ resource "azuread_service_principal" "vending" {
   count          = var.create_service_principal ? 1 : 0
   application_id = azuread_application.vending[0].application_id
 }
-
 
 data "azurerm_billing_enrollment_account_scope" "vending" {
   billing_account_name    = var.billing_account_name
