@@ -97,7 +97,7 @@ $uri = "$terraformCloudUrlPrefix/runs"
 $body = @{
     "data" = @{
         "attributes" = @{
-            "message" = "Custom message"
+            "message" = "Triggered From Subscription Vending GitHub Action"
         }
         "type" = "runs"
         "relationships" = @{
@@ -140,4 +140,23 @@ while(!($finalStatus.Contains($runStatus)))
     $runStatus = $runResult.data.attributes.status
 }
 
-return $runResult | ConvertTo-Json -Depth 10
+if($runStatus -eq "applied" -or $runStatus -eq "planned_and_finished")
+{
+    Write-Host "Run completed and applied successfully."
+    $uri = "$terraformCloudUrlPrefix/workspaces/$workspaceId/current-state-version"
+    $stateVersion = Invoke-RestMethod -Method "GET" -Uri $uri -Headers $headers
+
+    $stateVersionId = $stateVersion.data.id
+
+    $uri = "$terraformCloudUrlPrefix/state-versions/$stateVersionId/outputs"
+    $outputs = Invoke-RestMethod -Method "GET" -Uri $uri -Headers $headers
+}
+
+$result = @{
+    "workspaceId" = $workspaceId
+    "runId" = $runId
+    "runStatus" = $runStatus
+    "outputs" = $outputs.data
+}
+
+return $result | ConvertTo-Json -Depth 10
