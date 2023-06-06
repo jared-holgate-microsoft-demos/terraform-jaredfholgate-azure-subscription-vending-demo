@@ -119,4 +119,23 @@ $body = @{
 $bodyJson = ConvertTo-Json $body -Depth 10
 $runResult = Invoke-RestMethod -Uri $uri -Headers $headers -Method Post -ContentType "application/vnd.api+json" -Body $bodyJson
 
+$runStatus = $result.data.attributes.status
+
+$finalStatus = @(
+    "applied",
+    "errored",
+    "discarded",
+    "canceled",
+    "force_canceled"
+)
+
+while(!($finalStatus.Contains($runStatus)))
+{
+    Write-Host "Waiting for run to complete. Current status: $runStatus"
+    Start-Sleep -Seconds 5
+    $uri = "$terraformCloudUrlPrefix/$($runResult.data.links.self)"
+    $runResult = Invoke-RestMethod -Method "GET" -Uri $uri -Headers $headers
+    $runStatus = $result.data.attributes.status
+}
+
 return $runResult | ConvertTo-Json -Depth 10
