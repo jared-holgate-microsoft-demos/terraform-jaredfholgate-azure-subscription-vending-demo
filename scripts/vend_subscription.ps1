@@ -163,7 +163,7 @@ if($runStatus -eq "applied" -or $runStatus -eq "planned_and_finished")
             "value" = $outputValue
             "type" = $outputType
         }
-        $outputs.Add($outputObject)
+        $outputs += $outputObject
     }
 }
 
