@@ -123,6 +123,7 @@ $runId = $runResult.data.id
 $runStatus = $runResult.data.attributes.status
 
 $finalStatus = @(
+    "planned_and_finished",
     "applied",
     "errored",
     "discarded",
