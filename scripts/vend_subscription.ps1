@@ -14,7 +14,7 @@ Write-Host "subscriptionData: $subscriptionData"
 
 $subscriptionData | Out-File -FilePath ./terraform.tfvars.json
 
-tar -cvzf config.tar.gz ./*.tf ./terraform.tfvars.json
+tar -cvzf config.tar.gz ./*.tf ./terraform.tfvars.json ./modules
 
 $subscriptionVariables = ConvertFrom-Json $subscriptionData
 
